@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>List user</title>
+</head>
+<body>
+<a th:href="@{/user/create}">Create new user</a>
+<h1>Users</h1>
+<form>
+  Search by full name:
+  <input name="search" type="text"/>
+  <input type="submit" value="Search"/>
+</form>
+<br/>
+<table border="1">
+  <tr>
+    <th>FullName</th>
+    <th>Username</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Address</th>
+    <th>Avatar</th>
+    <th>Activated</th>
+    <th>Role</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+  <th:block th:each="userDto : ${userDtos}">
+    <tr>
+      <td th:text="${userDto.fullName}"></td>
+      <td th:text="${userDto.username}"></td>
+      <td th:text="${userDto.email}"></td>
+      <td th:text="${userDto.phone}"></td>
+      <td th:text="${userDto.address}"></td>
+      <td><img width="100" height="100" th:src="@{'/image/' + ${userDto.avatar}}"></td>
+      <td th:text="${userDto.activated}"></td>
+      <td th:if="${userDto.role}" th:text="${userDto.role.desc}"></td>
+      <td th:unless="${userDto.role}"></td>
+      <td><a th:href="@{/user/edit/__${userDto.id}__ }">Edit</a></td>
+      <td><a th:href="@{/user/delete/__${userDto.id}__ }">Delete</a></td>
+    </tr>
+  </th:block>
+</table>
+<div>
+  <a th:href="@{'/user/list'(page=${userDtos.number - 1})}" th:if="${userDtos.hasPrevious()}">Previous</a>
+  <span th:text="${userDtos.number + 1}"></span>/<span th:text="${userDtos.totalPages}"></span>
+  <a th:href="@{'/user/list'(page=${userDtos.number + 1})}" th:if="${userDtos.hasNext()}">Next</a>
+</div>
+</body>
+</html>

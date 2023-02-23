@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">SHOE SHOP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/shop/list}">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/shop/cart}">Cart<span class="sr-only">(current)</span></a>
+            </li>
+            <th:block th:if="${user == null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </th:block>
+            <th:block th:if="${user != null}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <label th:text="${user.getFullName()}"></label>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="user">
+                        <a class="dropdown-item" href="#">Setting</a>
+                        <a class="dropdown-item" href="#">Privacy</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Log out</a>
+                    </div>
+            </th:block>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" method="post" action="/User?action=search">
+            <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <div class="card-header my-3">All Products
+        <a th:href="@{/shop/list?action='increase'}">
+            <button type="button" class="btn btn-light">Sort price increase</button>
+        </a>
+        <a th:href="@{/shop/list?action='reduction'}">
+            <button type="button" class="btn btn-light">Sort price reduction</button>
+        </a>
+    </div>
+    <div class="row">
+        <th:block th:each="product : ${products}">
+            <a th:href="@{/shop/view}">
+                <div class="col-md-3 my-3">
+                    <div class="card w-100">
+                        <img class="card-img-top" th:src="@{'/image/' + ${product.image}}"
+                             alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.name}"></h5>
+                            <h6 class="price" th:text="${product.price}"></h6>
+                            <h6 class="category" th:text="${product.category.name}"></h6>
+                            <div class="mt-3 d-flex justify-content-between">
+                                <a class="btn btn-warning" th:href="@{/shop/add/__${product.id}__}">Add to Cart</a> <a
+                                    class="btn btn-primary" href="order-now?quantity=1&id=${p.getId()}">Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </th:block>
+    </div>
+</div>
+<div>
+    <a style="font-size: 30px" th:href="@{'/shop/list'(page=${products.number - 1})}" th:if="${products.hasPrevious()}">Previous</a>
+    <span th:text="${products.number + 1}"></span>/ <span th:text="${products.totalPages}"></span>
+    <a style="font-size: 30px" th:href="@{'/shop/list'(page=${products.number + 1})}"
+       th:if="${products.hasNext()}">Next</a>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

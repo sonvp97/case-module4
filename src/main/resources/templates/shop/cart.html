@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/shop/list">SHOE SHOP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/shop/list}">Home<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/shop/cart}">Cart<span class="sr-only">(current)</span></a>
+            </li>
+            <th:block th:if="${user == null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </th:block>
+            <th:block th:if="${user != null}">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="user" role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        <label th:text="${user.getFullName()}"></label>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="user">
+                        <a class="dropdown-item" href="#">Setting</a>
+                        <a class="dropdown-item" href="#">Privacy</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logout">Log out</a>
+                    </div>
+            </th:block>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </ul>
+        <form class="form-inline my-2 my-lg-0" method="post" action="/User?action=search">
+            <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 col-md-offset-1">
+
+            <table class="table table-hover" id="shopCart">
+                <thead>
+                <tr>
+                    <th>Producer</th>
+                    <th>Quantity</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Total</th>
+                    <th> </th>
+                    </tr>
+                </thead>
+                <th:block th:each="p : ${products}">
+                <tr>
+                    <td class="col-sm-8 col-md-6">
+                        <div class="media">
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" th:src="@{'/image/' + ${p.key.image}}" style="width: 72px; height: 72px;"> </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="#"><label th:text="${p.key.name}"></label></a></h4>
+                                <h5 class="media-heading"> by <a href="#"><label th:text="${p.key.description}"></label></a></h5>
+                                <span>Status: </span><span class="text-success"><strong th:text="${p.value}"></strong></span>
+                            </div>
+                        </div></td>
+                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                        <label th:text="${p.value}"/>
+                    </td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong th:text="${p.key.price}"></strong></td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong th:text="${p.key.price * p.value}"></strong></td>
+                    <td class="col-sm-1 col-md-1">
+                        <a th:href="@{/shop/cart/__${p.key.id}__ ?action='add'}" ><button type="button" class="btn btn-dark">+</button></a>
+                        <a th:href="@{/shop/cart/__${p.key.id}__ ?action='remove'}"><button type="button" class="btn btn-light">-</button></a>
+                </tr>
+                </th:block>
+                <tr>
+                    <td>  </td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td><h5>Subtotal</h5></td>
+                    <td class="text-right"><h5><strong th:text="${total}"></strong></h5></td>
+                </tr>
+                <tr>
+                    <td>  </td>
+                    <td>  </td>
+                    <td>  </td>
+                    <td>
+                        <button type="button" class="btn btn-default">
+                            <span class="glyphicon glyphicon-shopping-cart"></span> Continue Shopping
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-success">
+                            Checkout <span class="glyphicon glyphicon-play"></span>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

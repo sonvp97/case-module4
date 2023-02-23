@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Create user</title>
+</head>
+<body>
+<h1>Create user</h1>
+<p>
+  <a th:href="@{/user/list}">User list</a>
+</p>
+<th:block th:if="${message}">
+  <p th:text="${message}"
+     style="color:lightgreen;margin:10px 0px;"></p>
+</th:block>
+<form th:action="@{/user/create}" th:object="${userDto}" method="post" novalidate="novalidate" enctype="multipart/form-data">
+  <table>
+    <tr>
+      <td>FullName:</td>
+      <td><input type="text" th:field="*{fullName}"/></td>
+    </tr>
+    <tr>
+      <td>Username:</td>
+      <td><input type="text" th:field="*{username}"/></td>
+    </tr>
+    <tr>
+      <td>Password:</td>
+      <td><input type="password" th:field="*{password}"/></td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td><input type="email" th:field="*{email}"/></td>
+    </tr>
+    <tr>
+      <td>Phone:</td>
+      <td><input type="text" th:field="*{phone}"/></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td><input type="text" th:field="*{address}"/></td>
+    </tr>
+    <tr>
+      <td>Avatar:</td>
+      <td><input type="file" th:field="*{avatar}"/></td>
+    </tr>
+    <tr>
+      <td>Activated:</td>
+      <td>
+        <select th:field="*{activated}">
+          <option th:value="${true}" th:text="${'Activate'}"></option>
+          <option th:value="${false}" th:text="${'In-activate'}"></option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Role:</td>
+      <td>
+        <select th:field="*{role}">
+          <option th:each="r : ${roleDtos}" th:value="${r.id}" th:text="${r.desc}"></option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><input type="submit" value="Create user"></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>

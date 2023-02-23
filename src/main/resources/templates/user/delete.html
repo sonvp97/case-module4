@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete user</title>
+</head>
+<body>
+<h1>Delete user</h1>
+<h2>Are you sure?</h2>
+<p>
+  <a th:href="@{/user/list}">User list</a>
+</p>
+<form th:action="@{/user/delete}" th:object="${userDto}" method="post">
+  <input th:type="hidden" name="id" th:field="*{id}">
+  <table>
+    <tr>
+      <td>FullName:</td>
+      <td th:text="${userDto.fullName}"></td>
+    </tr>
+    <tr>
+      <td>Username:</td>
+      <td th:text="${userDto.username}"></td>
+    </tr>
+    <tr>
+      <td>Email:</td>
+      <td th:text="${userDto.email}"></td>
+    </tr>
+    <tr>
+      <td>Phone:</td>
+      <td th:text="${userDto.phone}"></td>
+    </tr>
+    <tr>
+      <td>Address:</td>
+      <td th:text="${userDto.address}"></td>
+    </tr>
+    <tr>
+      <td>Avatar:</td>
+      <td th:text="${userDto.avatar}"></td>
+    </tr>
+    <tr>
+      <td>Activated:</td>
+      <td th:text="${userDto.activated}"></td>
+    </tr>
+    <tr>
+      <td>Role:</td>
+      <td th:text="${userDto.role.desc}"></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><input type="submit" value="Delete user"></td>
+    </tr>
+  </table>
+</form>
+</body>
+</html>
